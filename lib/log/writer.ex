@@ -2,14 +2,13 @@ defmodule Log.Writer do
   @moduledoc """
   This module is used to write releases and logs. Releases are numbered in the common release date format. *Examples*: `"v1.0.3"` or `"v2.4.3"`.
    All release notes should be preceded by a lowercase "v". This module's functions typically return single atom:  `:ok` or `:error`
+
+  ### Release are made of:
+    - Release version -> v1.2.3
+    - Release date -> date
+    - Release lines -> At least on char long
+    - Relased by -> user / organization
   """
-
-  # a release should consist of:
-
-  # release version -> v1.2.3
-  # release date -> # date
-  # release lines -> At least on char long
-  # relased by -> # user / organization
 
   @doc """
     Appends one or more lines to a release.

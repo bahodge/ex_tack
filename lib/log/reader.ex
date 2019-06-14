@@ -9,6 +9,14 @@ defmodule Log.Reader do
   """
 
   def read do
+    # File.ls("lib/releases")
+
+    {:ok, files} = File.ls("lib/releases")
+
+    Enum.map(files, fn filename ->
+      split_filename = String.split(filename, "_")
+    end)
+    
   end
 
   @doc """
@@ -18,6 +26,4 @@ defmodule Log.Reader do
   def read(version) do
     IO.inspect(version)
   end
-
-  
 end

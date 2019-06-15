@@ -9,32 +9,50 @@ defmodule Log.Reader do
   """
 
   def read do
-    {:ok, file_string} = read_current_release_file()
-
-    file_string
-    |> format_file_string
+    filename = read_releases |> find_current_release()
+    if blank?(filename), do: {:error, :not_found}, else: read_file(filename)
   end
 
   @doc """
-    Search realease documents for release notes associated with the particular version number
+  Search realease documents for release notes associated with the particular version number
   """
 
   def read(version) do
-    IO.inspect(version)
+    filename =
+      read_releases()
+      |> sort_releases()
+      |> find_release_from_version(version)
+
+    if blank?(filename), do: {:error, :not_found}, else: read_file(filename)
   end
 
-  defp read_current_release_file do
-    Path.join("lib/releases", current_release()) |> File.read()
+  defp read_releases do
+    File.ls("lib/releases")
   end
 
-  # defp read_file(filename) do
-  #   Path.join("lib/releases", filename) |> File.read()
-  # end
+  defp sort_releases({:ok, files}) do
+    files
+    |> Enum.sort(fn f1, f2 -> f1 >= f2 end)
+  end
 
-  defp format_file_string(file_string) do
-    file_string
-    |> String.split("\n")
-    |> Enum.reject(fn str -> blank?(str) end)
+  defp find_current_release(releases) do
+    releases
+    |> sort_releases()
+    |> List.first()
+  end
+
+  defp find_release_from_version(releases, version) do
+    releases
+    |> Enum.map(fn filename -> String.split(filename, "_") end)
+    |> Enum.find(fn [version_number, _] -> version_number == version end)
+    |> case do
+      nil -> ""
+      version -> Enum.join(version, "_")
+    end
+  end
+
+  defp read_file(filename) do
+    Path.join("lib/releases", filename) |> File.read()
   end
 
   defp blank?(str) do
@@ -42,22 +60,5 @@ defmodule Log.Reader do
       nil -> true
       _ -> String.trim(str) == ""
     end
-  end
-
-  defp sorted_releases do
-    {:ok, releases} = File.ls("lib/releases")
-
-    releases
-    |> Enum.sort(fn f1, f2 -> f1 >= f2 end)
-  end
-
-  defp current_release do
-    sorted_releases()
-    |> List.first()
-  end
-
-  defp find_by_release_version(version) do
-    sorted_releases()
-  
   end
 end

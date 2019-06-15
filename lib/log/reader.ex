@@ -9,14 +9,10 @@ defmodule Log.Reader do
   """
 
   def read do
-    # File.ls("lib/releases")
+    {:ok, file_string} = read_current_release_file()
 
-    {:ok, files} = File.ls("lib/releases")
-
-    Enum.map(files, fn filename ->
-      split_filename = String.split(filename, "_")
-    end)
-    
+    file_string
+    |> format_file_string
   end
 
   @doc """
@@ -25,5 +21,43 @@ defmodule Log.Reader do
 
   def read(version) do
     IO.inspect(version)
+  end
+
+  defp read_current_release_file do
+    Path.join("lib/releases", current_release()) |> File.read()
+  end
+
+  # defp read_file(filename) do
+  #   Path.join("lib/releases", filename) |> File.read()
+  # end
+
+  defp format_file_string(file_string) do
+    file_string
+    |> String.split("\n")
+    |> Enum.reject(fn str -> blank?(str) end)
+  end
+
+  defp blank?(str) do
+    case str do
+      nil -> true
+      _ -> String.trim(str) == ""
+    end
+  end
+
+  defp sorted_releases do
+    {:ok, releases} = File.ls("lib/releases")
+
+    releases
+    |> Enum.sort(fn f1, f2 -> f1 >= f2 end)
+  end
+
+  defp current_release do
+    sorted_releases()
+    |> List.first()
+  end
+
+  defp find_by_release_version(version) do
+    sorted_releases()
+  
   end
 end

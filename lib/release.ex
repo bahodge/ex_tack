@@ -1,4 +1,8 @@
 defmodule ExTack.Release do
+  @moduledoc """
+    A helper to assist in the parsing and conversion of releases. This should only be accessed via api and is not meant to be directly accessed.
+  """
+
   defstruct version: nil, lines: []
 
   def to_markdown(release) do

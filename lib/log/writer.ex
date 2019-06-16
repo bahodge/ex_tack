@@ -1,13 +1,8 @@
 defmodule Log.Writer do
   @moduledoc """
   This module is used to write releases and logs. Releases are numbered in the common release date format. *Examples*: `"v1.0.3"` or `"v2.4.3"`.
-   All release notes should be preceded by a lowercase "v". This module's functions typically return single atom:  `:ok` or `:error`
-
-  ### Release are made of:
-    - Release version -> v1.2.3
-    - Release date -> date
-    - Release lines -> At least on char long
-    - Relased by -> user / organization
+  All release notes should be preceded by a lowercase "v". This module's functions typically return single atom:  `:ok`
+  or a two element tuple `{:error, :bad_version}`
   """
 
   @doc """
@@ -38,8 +33,6 @@ defmodule Log.Writer do
       {:error, :bad_version}
     end
   end
-
-
 
   defp build_filename(version) do
     "#{version}_release.md"
@@ -92,6 +85,4 @@ defmodule Log.Writer do
       _ -> String.trim(str) == ""
     end
   end
-
-
 end

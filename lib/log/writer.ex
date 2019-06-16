@@ -39,12 +39,13 @@ defmodule Log.Writer do
     end
   end
 
+
+
   defp build_filename(version) do
     "#{version}_release.md"
   end
 
   defp create_release_file(version) do
-
     initial_content = "## Release #{version}"
 
     ("#{release_path()}/" <> build_filename(version))
@@ -91,4 +92,6 @@ defmodule Log.Writer do
       _ -> String.trim(str) == ""
     end
   end
+
+
 end

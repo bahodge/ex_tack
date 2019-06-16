@@ -1,6 +1,5 @@
 defmodule ExTack do
   alias Log.{Writer, Reader}
-  alias ExTack.Release
 
   @moduledoc """
     This is the entry point for the application. Users can use the following commands in order to manage their releases.

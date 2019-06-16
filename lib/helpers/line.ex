@@ -1,4 +1,4 @@
-defmodule ExTack.Line do
+defmodule Helpers.Line do
   @moduledoc """
     A struct representation of a specific line. Used to organize a particular release's line contents
   """

@@ -25,7 +25,7 @@ defmodule Log.ReaderTest do
   end
 
   defp make_release_files do
-    File.mkdir!("lib/releases/#{Mix.env()}")
+    ExTack.init()
     build_valid_files()
     seed_valid_files()
 

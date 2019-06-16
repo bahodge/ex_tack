@@ -9,11 +9,12 @@ defmodule Log.WriterTest do
   @line_content "hello there!"
 
   defp cleanup_release_files do
-    File.rm_rf("lib/releases/#{Mix.env()}")
+    File.rm_rf("lib/releases")
     :ok
   end
 
-  setup_all do
+  setup do
+    ExTack.init()
     on_exit("Some note", fn -> cleanup_release_files() end)
     :ok
   end

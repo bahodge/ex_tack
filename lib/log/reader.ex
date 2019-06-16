@@ -25,7 +25,7 @@ defmodule Log.Reader do
   end
 
   defp read_releases do
-    find_or_create_release_directory!()
+    ExTack.init()
     File.ls("lib/releases/#{Mix.env()}")
   end
 
@@ -58,11 +58,6 @@ defmodule Log.Reader do
     {:ok, contents, filename}
   end
 
-  defp find_or_create_release_directory! do
-    {:ok, directories} = File.ls("lib/releases")
-    dir = directories |> Enum.find(fn directory -> Mix.env() == directory end)
-    if blank?(dir), do: File.mkdir("lib/releases/#{Mix.env()}")
-  end
 
   defp blank?(str) do
     case str do

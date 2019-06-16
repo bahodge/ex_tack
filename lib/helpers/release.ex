@@ -1,4 +1,6 @@
-defmodule ExTack.Release do
+defmodule Helpers.Release do
+
+  alias Helpers.Line
   @moduledoc """
     A helper to assist in the parsing and conversion of releases. This should only be accessed via api and is not meant to be directly accessed.
   """
@@ -25,7 +27,7 @@ defmodule ExTack.Release do
 
   def append_lines([line_item_content | tail], release) do
     new_line_number = get_new_line_number(release)
-    new_line = %ExTack.Line{line_number: new_line_number, line_content: line_item_content}
+    new_line = %Line{line_number: new_line_number, line_content: line_item_content}
     new_release = %__MODULE__{version: release.version, lines: [new_line | release.lines]}
     append_lines(tail, new_release)
   end

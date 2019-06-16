@@ -24,6 +24,7 @@ defmodule ExTack do
   """
   @spec create(version) :: atom() | {:error, :bad_version}
   def create(version) do
+    init()
     Writer.create(version)
   end
 
@@ -54,6 +55,7 @@ defmodule ExTack do
   """
   @spec append_to(version, binary) :: atom() | {:error, :bad_version}
   def append_to(version, content) do
+    init()
     Writer.append_to(version, content)
   end
 

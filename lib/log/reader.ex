@@ -1,7 +1,6 @@
 defmodule Log.Reader do
   @moduledoc """
-  This module is used to read specific releases created. Releases are numbered in the common release date format. *Examples*: `"v1.0.3"` or `"v2.4.3"`.
-   All release notes should be preceded by a lowercase "v". This module's functions typically return a tuple `{:ok, release_content, filename}` or `{:error, :not_found}`
+  This module is used to read specific releases created. This module's functions typically return a tuple `{:ok, release_content, filename}` or `{:error, :not_found}`
   """
 
   @doc """

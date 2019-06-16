@@ -58,7 +58,7 @@ defmodule ExTack do
     Output the most recent release version to markdown
   """
   def read do
-    Reader.read()
+    Reader.read
   end
 
   defp create_directory_structure! do

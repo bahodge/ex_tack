@@ -8,13 +8,13 @@ defmodule ExTack.Release do
   end
 
   def from_markdown({_status, content, _filename}) do
-    from_markdown(content)
+    content |> from_markdown()
   end
 
   def from_markdown(content) do
     content_lines = String.split(content, "\n") |> Enum.reject(fn item -> blank?(item) end)
     lines = parse_line_item_contents(tl(content_lines))
-    append_lines(lines, %ExTack.Release{version: parse_version(hd(content_lines))})
+    append_lines(lines, %__MODULE__{version: parse_version(hd(content_lines))})
   end
 
   def append_lines([], release), do: release
@@ -22,7 +22,7 @@ defmodule ExTack.Release do
   def append_lines([line_item_content | tail], release) do
     new_line_number = get_new_line_number(release)
     new_line = %ExTack.Line{line_number: new_line_number, line_content: line_item_content}
-    new_release = %ExTack.Release{version: release.version, lines: [new_line | release.lines]}
+    new_release = %__MODULE__{version: release.version, lines: [new_line | release.lines]}
     append_lines(tail, new_release)
   end
 

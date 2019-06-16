@@ -1,22 +1,21 @@
 defmodule Log.Reader do
   @moduledoc """
   This module is used to read specific releases created. Releases are numbered in the common release date format. *Examples*: `"v1.0.3"` or `"v2.4.3"`.
-   All release notes should be preceded by a lowercase "v". This module's functions typically return a two element tuple `{:ok, release}` or `{:error, :not_found}`
+   All release notes should be preceded by a lowercase "v". This module's functions typically return a tuple `{:ok, release_content, filename}` or `{:error, :not_found}`
   """
 
   @doc """
     Search realease documents for the current release.
   """
-
   def read do
-    filename = read_releases |> find_current_release()
+    filename = read_releases() |> find_current_release()
     if blank?(filename), do: {:error, :not_found}, else: read_file(filename)
   end
 
   @doc """
   Search realease documents for release notes associated with the particular version number
   """
-
+  @spec read(binary()) :: {:ok, binary(), binary()} | {:error, :not_found}
   def read(version) do
     filename =
       read_releases()
@@ -27,7 +26,8 @@ defmodule Log.Reader do
   end
 
   defp read_releases do
-    File.ls("lib/releases")
+    find_or_create_release_directory!()
+    File.ls("lib/releases/#{Mix.env()}")
   end
 
   defp sort_releases({:ok, files}) do
@@ -52,7 +52,17 @@ defmodule Log.Reader do
   end
 
   defp read_file(filename) do
-    Path.join("lib/releases", filename) |> File.read()
+    {:ok, contents} =
+      Path.join("lib/releases/#{Mix.env()}", filename)
+      |> File.read()
+
+    {:ok, contents, filename}
+  end
+
+  defp find_or_create_release_directory! do
+    {:ok, directories} = File.ls("lib/releases")
+    dir = directories |> Enum.find(fn directory -> Mix.env() == directory end)
+    if blank?(dir), do: File.mkdir("lib/releases/#{Mix.env()}")
   end
 
   defp blank?(str) do

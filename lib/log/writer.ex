@@ -33,25 +33,23 @@ defmodule Log.Writer do
     fixed_version = version |> format_version
 
     if valid_version?(fixed_version) do
-      release_path()
+      create_release_file(fixed_version)
     else
       {:error, :bad_version}
     end
   end
 
-  @doc """
-    Creates a new release with a specified version
-  """
-  def create(version) do
-    IO.inspect(version)
+
+
+  defp build_filename(version) do
+    "#{version}_release.md"
   end
 
-  @doc """
-    Creates a new release with a specified version and appends lines to the newly created version
-  """
-  def create(version, lines) do
-    IO.inspect(version)
-    IO.inspect(lines)
+  defp create_release_file(version) do
+    initial_content = "## Release #{version}"
+
+    ("#{release_path()}/" <> build_filename(version))
+    |> File.write!(initial_content)
   end
 
   defp file_path(filename) do
@@ -64,14 +62,10 @@ defmodule Log.Writer do
     |> Enum.reject(fn i -> i == "." || blank?(i) end)
     |> List.to_tuple()
     |> case do
-      {"v"} -> {:error, :bad_version}
-      {""} -> {:error, :bad_version}
       {"v", major, minor, patch} -> "v#{major}.#{minor}.#{patch}"
       {"v", major, minor} -> "v#{major}.#{minor}.0"
       {"v", major} -> "v#{major}.0.0"
-      {major, minor, patch} -> "v#{major}.#{minor}.#{patch}"
-      {major, minor} -> "v#{major}.#{minor}.0"
-      {major} -> "v#{major}.0.0"
+      _ -> {:error, :bad_version}
     end
   end
 
@@ -98,4 +92,6 @@ defmodule Log.Writer do
       _ -> String.trim(str) == ""
     end
   end
+
+
 end

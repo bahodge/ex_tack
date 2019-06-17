@@ -1,6 +1,8 @@
 defmodule ExTack do
   alias Log.{Writer, Reader}
 
+  # @release_directory Application.get_env(:release_directory)
+
   @typedoc """
     Versions are the primary way to find releases. All versions should be binaries preceded by a `"v"`
     Examples `"v1.3.4"` || `"v1.3"` || `"v3"`
@@ -75,7 +77,7 @@ defmodule ExTack do
   end
 
   defp create_directory_structure! do
-    {:ok, lib_list} = File.ls("lib/")
+    {:ok, lib_list} = File.ls("lib")
 
     unless Enum.find(lib_list, fn list_item -> list_item == "releases" end),
       do: File.mkdir("lib/releases")

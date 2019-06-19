@@ -14,9 +14,11 @@ def deps do
 end
 ```
 
-Install the package with
+## Get Started
 
 - `mix deps.get`
+- `iex -S mix # => Compiles the project and opens the interactive shell`
+- `iex> ExTack.init() # => Creates the required directory structure`
 
 ## ExTack is simple to use
 

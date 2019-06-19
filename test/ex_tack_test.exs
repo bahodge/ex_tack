@@ -3,7 +3,6 @@ defmodule ExTackTest do
 
   @good_version_1 "v1.23.4"
   @good_version_2 "v7.0.4"
-  @bad_version "v1.23.4.6.5"
   @new_line_content "Hello World"
 
   defp cleanup_release_files do

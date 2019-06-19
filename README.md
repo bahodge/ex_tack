@@ -1,3 +1,6 @@
+
+[![CircleCI](https://circleci.com/gh/bahodge/ex_tack/tree/master.svg?style=svg)](https://circleci.com/gh/bahodge/ex_tack/tree/master)
+
 # ExTack
 
 ExTack is a simple, lightweight and entirely elixir changelog library. Its purpose is to add support to create changelog files. Each release version is exported as a markdown file. These **UNMODIFIED** release files can be read in and interpreted.

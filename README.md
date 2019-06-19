@@ -1,6 +1,10 @@
 # ExTack
 
-**TODO: Add description**
+ExTack is a simple, lightweight and entirely elixir changelog library. Its purpose is to add support to create changelog files. Each release version is exported as a markdown file. These **UNMODIFIED** release files can be read in and interpreted.
+
+### Future Plans
+
+In the future, I want to add support for git hooks, deploy hooks and CI integration. I will also add support to exporting to CSV, PDF and txt file types.
 
 ## Installation
 

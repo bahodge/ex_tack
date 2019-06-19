@@ -1,5 +1,6 @@
 defmodule ExTack do
   alias Log.{Writer, Reader}
+  alias Helpers.VersionFormatter
 
   # @release_directory Application.get_env(:release_directory)
 
@@ -27,7 +28,9 @@ defmodule ExTack do
   @spec create(version) :: atom() | {:error, :bad_version}
   def create(version) do
     init()
-    Writer.create(version)
+
+    VersionFormatter.format_version(version)
+    |> Writer.create()
   end
 
   @doc """
@@ -35,9 +38,14 @@ defmodule ExTack do
   """
   @spec create(version, binary) :: atom() | {:error, :bad_version}
   def create(version, content) do
-    case Writer.create(version) do
-      {:error, :bad_version} -> IO.puts("Could not create the release with version #{version}")
-      _ -> Writer.append_to(version, content)
+    formatted_version = VersionFormatter.format_version(version)
+
+    case Writer.create(formatted_version) do
+      {:error, :bad_version} ->
+        IO.puts("Could not create the release with version #{formatted_version}")
+
+      _ ->
+        Writer.append_to(formatted_version, content)
     end
   end
 
@@ -46,9 +54,11 @@ defmodule ExTack do
   """
   @spec update_or_create(version, binary) :: atom() | {:error, :bad_version}
   def update_or_create(version, content) do
-    case Reader.read(version) do
-      {:error, :not_found} -> create(version, content)
-      {_status, _content, _filename} -> Writer.append_to(version, content)
+    formatted_version = VersionFormatter.format_version(version)
+
+    case Reader.read(formatted_version) do
+      {:error, :not_found} -> create(formatted_version, content)
+      {_status, _content, _filename} -> Writer.append_to(formatted_version, content)
     end
   end
 
@@ -58,7 +68,9 @@ defmodule ExTack do
   @spec append_to(version, binary) :: atom() | {:error, :bad_version}
   def append_to(version, content) do
     init()
-    Writer.append_to(version, content)
+
+    VersionFormatter.format_version(version)
+    |> Writer.append_to(content)
   end
 
   @doc """
@@ -66,7 +78,7 @@ defmodule ExTack do
   """
   @spec read(version) :: {:ok, binary, binary} | {:error, :not_found}
   def read(version) do
-    Reader.read(version)
+    VersionFormatter.format_version(version) |> Reader.read()
   end
 
   @doc """

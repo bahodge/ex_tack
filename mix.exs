@@ -1,7 +1,6 @@
 defmodule ExTack.MixProject do
   use Mix.Project
 
-
   def project do
     [
       app: :ex_tack,
@@ -9,6 +8,7 @@ defmodule ExTack.MixProject do
       elixir: "~> 1.8",
       start_permanent: Mix.env() == :prod,
       description: "A simple changelog manager",
+      package: package(),
       deps: deps()
     ]
   end
@@ -24,6 +24,14 @@ defmodule ExTack.MixProject do
   defp deps do
     [
       {:ex_doc, "~> 0.19", only: :dev, runtime: false}
+    ]
+  end
+
+  defp package do
+    [
+      maintainers: ["bahodge"],
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/bahodge/ex_tack"}
     ]
   end
 end

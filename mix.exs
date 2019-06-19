@@ -1,12 +1,14 @@
 defmodule ExTack.MixProject do
   use Mix.Project
 
+
   def project do
     [
       app: :ex_tack,
-      version: "0.1.0",
+      version: "0.0.1",
       elixir: "~> 1.8",
       start_permanent: Mix.env() == :prod,
+      description: "A simple changelog manager",
       deps: deps()
     ]
   end
